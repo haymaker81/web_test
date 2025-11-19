@@ -180,8 +180,28 @@
                 </tr>
             `;
         }
+        
+        /** 캔버스 싱글 클릭 이벤트 핸들러 (좌표 표시) */
+        function handleCanvasClick(event) {
+            // event.offsetX, event.offsetY는 캔버스 엘리먼트 내에서의 X, Y 좌표 (CSS 픽셀 기준)
+            const x = event.offsetX;
+            const y = event.offsetY;
 
-        /** 캔버스 더블 클릭 이벤트 핸들러 */
+            // 좌표를 모달 내의 새로운 div에 표시하도록 변경
+            const display = document.getElementById('modalCoordinateDisplay');
+            
+            // alert() 대신 화면의 특정 영역에 좌표를 표시합니다.
+            display.textContent = `클릭 좌표: X=${Math.round(x)}, Y=${Math.round(y)}`;
+            console.log(`Canvas Clicked: X=${x}, Y=${y}`);
+            
+            // 3초 후 메시지 지우기
+            setTimeout(() => {
+                // 모달이 닫히기 전에 좌표를 지웁니다.
+                display.textContent = '';
+            }, 3000);
+        }
+
+        /** 캔버스 더블 클릭 이벤트 핸들러 (선택 로직) */
         function handleCanvasDoubleClick(event) {
             // event.offsetY는 캔버스 엘리먼트 내에서의 Y 좌표 (CSS 픽셀 기준)
             const y = event.offsetY;
@@ -210,7 +230,11 @@
             searchBtn.addEventListener('click', showModal);
 
             const canvas = document.getElementById('customerTable');
-            // 캔버스에 더블 클릭 이벤트 리스너 추가
+            
+            // 캔버스에 싱글 클릭 이벤트 리스너 추가 (좌표 표시)
+            canvas.addEventListener('click', handleCanvasClick); 
+            
+            // 캔버스에 더블 클릭 이벤트 리스너 추가 (선택 로직)
             canvas.addEventListener('dblclick', handleCanvasDoubleClick);
 
             // 초기 결과 테이블을 빈 값으로 설정합니다.
@@ -224,9 +248,9 @@
     <div class="max-w-3xl mx-auto bg-white shadow-2xl rounded-xl p-8">
         <h1 class="text-3xl font-extrabold mb-8 text-indigo-700">고객 정보 검색 애플리케이션</h1>
         
-        <!-- 1. 검색 버튼 영역 -->
-        <div class="mb-8 flex justify-center">
-            <button id="searchBtn" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+        <!-- 1. 검색 버튼 영역 (좌표 표시 영역 제거) -->
+        <div class="mb-8 flex flex-col items-center">
+            <button id="searchBtn" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mb-4">
                 고객 검색하기 (모달 열기)
             </button>
         </div>
@@ -256,6 +280,11 @@
         <div class="modal-content">
             <h3 class="text-2xl font-semibold mb-4 text-gray-700">고객 검색 (더블클릭하여 선택)</h3>
             
+            <!-- ADDED: 캔버스 클릭 좌표를 모달 내부에 표시할 영역 -->
+            <div id="modalCoordinateDisplay" class="text-base font-mono text-indigo-600 mb-2 h-6">
+                <!-- 캔버스 클릭 좌표가 여기에 표시됩니다. -->
+            </div>
+            
             <!-- 닫기 버튼 -->
             <button id="modal-close-btn" onclick="hideModal()" class="p-1 text-gray-400 hover:text-gray-600 rounded-full bg-white transition duration-150 ease-in-out">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -265,7 +294,7 @@
             <canvas id="customerTable" role="img" aria-label="고객 정보 목록 테이블"></canvas>
             
             <p class="mt-4 text-sm text-gray-600">
-                * 원하는 고객 정보를 **더블클릭**하여 선택해 주세요.
+                * 원하는 고객 정보를 **더블클릭**하여 선택해 주세요. (한 번 클릭 시 모달 내부에 좌표가 표시됩니다.)
             </p>
         </div>
     </div>
