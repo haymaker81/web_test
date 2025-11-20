@@ -225,6 +225,43 @@
             }
         }
 
+        /** 캔버스 이미지를 PNG 파일로 저장하는 함수 */
+        function saveCanvasImage() {
+            const canvas = document.getElementById('customerTable');
+            
+            if (canvas.width === 0 || canvas.height === 0) {
+                const messageDiv = document.getElementById('modalCoordinateDisplay');
+                messageDiv.textContent = '캔버스에 내용이 없습니다. 먼저 테이블을 로드해주세요.';
+                setTimeout(() => messageDiv.textContent = '', 3000);
+                return;
+            }
+            
+            // 1. 캔버스 내용을 Data URL (PNG 형식)로 가져옵니다.
+            const imageURL = canvas.toDataURL('image/png');
+            
+            // 2. 가상 링크(<a>) 엘리먼트를 생성합니다.
+            const a = document.createElement('a');
+            
+            // 3. 다운로드 파일 이름을 지정합니다.
+            a.download = '고객_정보_테이블_' + new Date().toISOString().slice(0, 10) + '.png';
+            
+            // 4. Data URL을 링크의 href 속성에 설정합니다.
+            a.href = imageURL;
+            
+            // 5. 링크를 자동으로 클릭하여 다운로드를 시작합니다.
+            document.body.appendChild(a);
+            a.click();
+            
+            // 6. 사용 후 가상 링크 엘리먼트를 제거합니다.
+            document.body.removeChild(a);
+
+            // 다운로드 완료 메시지 표시 (선택 사항)
+            const messageDiv = document.getElementById('modalCoordinateDisplay');
+            messageDiv.textContent = '이미지 다운로드가 시작되었습니다.';
+            setTimeout(() => messageDiv.textContent = '', 3000);
+        }
+
+
         window.onload = function() {
             const searchBtn = document.getElementById('searchBtn');
             searchBtn.addEventListener('click', showModal);
@@ -236,6 +273,10 @@
             
             // 캔버스에 더블 클릭 이벤트 리스너 추가 (선택 로직)
             canvas.addEventListener('dblclick', handleCanvasDoubleClick);
+            
+            // 캔버스 이미지 저장 버튼 이벤트 리스너 추가
+            const saveBtn = document.getElementById('saveImageBtn');
+            saveBtn.addEventListener('click', saveCanvasImage);
 
             // 초기 결과 테이블을 빈 값으로 설정합니다.
             updateSelectedCustomer({
@@ -248,7 +289,7 @@
     <div class="max-w-3xl mx-auto bg-white shadow-2xl rounded-xl p-8">
         <h1 class="text-3xl font-extrabold mb-8 text-indigo-700">고객 정보 검색 애플리케이션</h1>
         
-        <!-- 1. 검색 버튼 영역 (좌표 표시 영역 제거) -->
+        <!-- 1. 검색 버튼 영역 -->
         <div class="mb-8 flex flex-col items-center">
             <button id="searchBtn" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mb-4">
                 고객 검색하기 (모달 열기)
@@ -280,9 +321,16 @@
         <div class="modal-content">
             <h3 class="text-2xl font-semibold mb-4 text-gray-700">고객 검색 (더블클릭하여 선택)</h3>
             
-            <!-- ADDED: 캔버스 클릭 좌표를 모달 내부에 표시할 영역 -->
+            <!-- 캔버스 클릭 좌표 표시 영역 -->
             <div id="modalCoordinateDisplay" class="text-base font-mono text-indigo-600 mb-2 h-6">
                 <!-- 캔버스 클릭 좌표가 여기에 표시됩니다. -->
+            </div>
+            
+            <!-- ADDED: 캔버스 이미지 저장 버튼 -->
+            <div class="flex justify-end mb-4">
+                 <button id="saveImageBtn" class="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-lg shadow hover:bg-green-600 transition ease-in-out duration-150">
+                    캔버스 이미지 저장 (PNG)
+                </button>
             </div>
             
             <!-- 닫기 버튼 -->
