@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신한라이프 AX HUB 기술평가 자료 다운로드</title>
+    <!-- Tailwind CSS CDN 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 모달 배경 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+
+        /* 캔버스 컨테이너 스타일 */
+        .modal-content {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            position: relative;
+        }
+
+        /* 닫기 버튼을 모달 상단 우측에 배치 */
+        #modal-close-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 min-h-screen font-sans">
+    <div class="max-w-3xl mx-auto bg-white shadow-2xl rounded-xl p-8">
+        <h1 class="text-3xl font-extrabold mb-8 text-indigo-700">신한라이프 AX HUB 기술평가 파일 다운로드</h1>
+        
+        <!-- 2. 검색 결과 테이블 영역 (선택된 한 행) -->
+        <h2 class="text-xl font-bold mb-4 text-gray-700">파일 목록</h2>
+        <div class="overflow-x-auto rounded-lg border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">시연시나리오</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">파일명</th>                        
+                    </tr>
+                </thead>
+                <tbody id="resultBody" class="bg-white divide-y divide-gray-200">
+                    <tr>
+                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">[시나리오1] RAG</td>
+                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><a href="./보험문서.pdf">RAG 적재용 보험문서</a></td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">[시나리오1] RAG</td>
+                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><a href="#">RAG 검증용 QA SET</a></td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">[시나리오2] 멀티에이전트</td>
+                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><a href="./data_2023.csv">보험회사별 계약성적표(2023)</a><br><a href="./data_2024.csv">보험회사별 계약성적표(2024)</a><br><a href="./data_2025.csv">보험회사별 계약성적표(2025)</a></td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">[시나리오3] COMPUTER-USE</td>
+                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><a href="#">보험문서 완성하기 작업서식</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p align="center">** 다운받은 파일은 시연 종료 후 반드시 파기 해주시기 바랍니다. **</p>
+    </div>
+
+</body>
+</html>
